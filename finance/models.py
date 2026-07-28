@@ -123,6 +123,42 @@ class Loan(models.Model):
     def __str__(self):
         return f"{self.user.username} - {self.loan_name}"
 
+class Savings(models.Model):
+
+    TRANSACTION_TYPES = [
+        ("DEPOSIT", "Deposit"),
+        ("WITHDRAWAL", "Withdrawal"),
+    ]
+
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE
+    )
+
+    transaction_type = models.CharField(
+        max_length=15,
+        choices=TRANSACTION_TYPES
+    )
+
+    amount = models.DecimalField(
+        max_digits=12,
+        decimal_places=2
+    )
+
+    source = models.CharField(
+        max_length=100
+    )
+
+    date = models.DateField()
+
+    notes = models.CharField(
+        max_length=255,
+        blank=True
+    )
+
+    def __str__(self):
+        return f"{self.user.username} - {self.transaction_type} - {self.amount}"
+
 
     
 

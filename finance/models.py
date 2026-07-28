@@ -159,6 +159,72 @@ class Savings(models.Model):
     def __str__(self):
         return f"{self.user.username} - {self.transaction_type} - {self.amount}"
 
+class PurchaseGoal(models.Model):
+
+    PRIORITY_CHOICES = [
+        ("HIGH", "High"),
+        ("MEDIUM", "Medium"),
+        ("LOW", "Low"),
+    ]
+
+    STATUS_CHOICES = [
+        ("PENDING", "Pending"),
+        ("PURCHASED", "Purchased"),
+        ("CANCELLED", "Cancelled"),
+    ]
+
+    CATEGORY_CHOICES = [
+        ("VEHICLE", "Vehicle"),
+        ("ELECTRONICS", "Electronics"),
+        ("HOUSE", "House"),
+        ("EDUCATION", "Education"),
+        ("TRAVEL", "Travel"),
+        ("OTHER", "Other"),
+    ]
+
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE
+    )
+
+    goal_name = models.CharField(
+        max_length=100
+    )
+
+    category = models.CharField(
+        max_length=20,
+        choices=CATEGORY_CHOICES
+    )
+
+    target_price = models.DecimalField(
+        max_digits=12,
+        decimal_places=2
+    )
+
+    target_date = models.DateField()
+
+    priority = models.CharField(
+        max_length=10,
+        choices=PRIORITY_CHOICES,
+        default="MEDIUM"
+    )
+
+    status = models.CharField(
+        max_length=15,
+        choices=STATUS_CHOICES,
+        default="PENDING"
+    )
+
+    notes = models.CharField(
+        max_length=255,
+        blank=True
+    )
+
+    def __str__(self):
+        return f"{self.user.username} - {self.goal_name}"
+
+
+
 
     
 

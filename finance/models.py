@@ -57,6 +57,72 @@ class Expense(models.Model):
     def __str__(self):
         return f"{self.user.username} - {self.category.name} - {self.amount}"
 
+class Loan(models.Model):
+
+    STATUS_CHOICES = [
+        ("ACTIVE", "Active"),
+        ("CLOSED", "Closed"),
+    ]
+
+    LOAN_TYPES = [
+        ("HOME", "Home Loan"),
+        ("CAR", "Car Loan"),
+        ("EDUCATION", "Education Loan"),
+        ("PERSONAL", "Personal Loan"),
+        ("OTHER", "Other"),
+    ]
+
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE
+    )
+
+    loan_name = models.CharField(
+        max_length=100
+    )
+
+    loan_type = models.CharField(
+        max_length=20,
+        choices=LOAN_TYPES
+    )
+
+    bank_name = models.CharField(
+        max_length=100
+    )
+
+    total_amount = models.DecimalField(
+        max_digits=12,
+        decimal_places=2
+    )
+
+    remaining_balance = models.DecimalField(
+        max_digits=12,
+        decimal_places=2
+    )
+
+    interest_rate = models.DecimalField(
+        max_digits=5,
+        decimal_places=2
+    )
+
+    emi = models.DecimalField(
+        max_digits=10,
+        decimal_places=2
+    )
+
+    start_date = models.DateField()
+
+    end_date = models.DateField()
+
+    status = models.CharField(
+        max_length=10,
+        choices=STATUS_CHOICES,
+        default="ACTIVE"
+    )
+
+    def __str__(self):
+        return f"{self.user.username} - {self.loan_name}"
+
 
     
 

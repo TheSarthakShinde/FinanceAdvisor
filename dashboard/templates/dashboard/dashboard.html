@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container mt-5">
+
+    <h2>Welcome {{ request.user.username }}</h2>
+    <a
+    href="{% url 'add_income' %}"
+    class="btn btn-primary mb-3">
+
+    + Add Income
+
+</a>
+
+    <hr>
+
+    <div class="row">
+
+        <div class="col-md-3">
+            <div class="card p-3">
+                <h5>Income</h5>
+                <h3>${{ summary.income }}</h3>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card p-3">
+                <h5>Expenses</h5>
+                <h3>${{ summary.expenses }}</h3>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card p-3">
+                <h5>Loan EMI</h5>
+                <h3>${{ summary.emi }}</h3>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card p-3">
+                <h5>Savings</h5>
+                <h3>${{ summary.savings }}</h3>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

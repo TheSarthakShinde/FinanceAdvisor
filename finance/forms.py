@@ -18,3 +18,24 @@ class IncomeForm(forms.ModelForm):
                 attrs={"type": "date"}
             )
         }
+
+from .models import Expense
+
+
+class ExpenseForm(forms.ModelForm):
+
+    class Meta:
+        model = Expense
+
+        fields = [
+            "category",
+            "amount",
+            "description",
+            "date",
+        ]
+
+        widgets = {
+            "date": forms.DateInput(
+                attrs={"type": "date"}
+            )
+        }

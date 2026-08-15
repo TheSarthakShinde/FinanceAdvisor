@@ -8,10 +8,10 @@ class IncomeForm(forms.ModelForm):
         model = Income
 
         fields = [
-            "source",
-            "amount",
-            "date",
-        ]
+    "source",
+    "amount",
+    "date",
+]
 
         widgets = {
             "date": forms.DateInput(
@@ -28,10 +28,33 @@ class ExpenseForm(forms.ModelForm):
         model = Expense
 
         fields = [
-            "category",
+         "category",
+    "payment_source",
+    "amount",
+    "description",
+    "date",
+]
+
+        widgets = {
+            "date": forms.DateInput(
+                attrs={"type": "date"}
+            )
+        }
+
+from .models import Savings
+
+
+class SavingsForm(forms.ModelForm):
+
+    class Meta:
+        model = Savings
+
+        fields = [
+            "transaction_type",
             "amount",
-            "description",
+            "source",
             "date",
+            "notes",
         ]
 
         widgets = {
@@ -39,3 +62,5 @@ class ExpenseForm(forms.ModelForm):
                 attrs={"type": "date"}
             )
         }
+
+        

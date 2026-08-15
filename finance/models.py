@@ -31,6 +31,12 @@ class ExpenseCategory(models.Model):
         return self.name
 
 class Expense(models.Model):
+    PAYMENT_SOURCES = [
+        ("SAVINGS", "Savings"),
+        ("BANK", "Bank Account"),
+        ("CASH", "Cash"),
+        ("CARD", "Credit Card"),
+    ]
 
     user = models.ForeignKey(
         User,
@@ -41,6 +47,11 @@ class Expense(models.Model):
         ExpenseCategory,
         on_delete=models.PROTECT
     )
+    payment_source = models.CharField(
+    max_length=20,
+    choices=PAYMENT_SOURCES,
+    default="BANK"
+)
 
     amount = models.DecimalField(
         max_digits=12,

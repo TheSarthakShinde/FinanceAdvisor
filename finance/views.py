@@ -1,9 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
-
-from .forms import IncomeForm
-
-
+from .models import Savings
+from .forms import IncomeForm, ExpenseForm, SavingsForm
 @login_required
 def add_income(request):
 
@@ -51,6 +49,17 @@ def add_expense(request):
             expense.user = request.user
 
             expense.save()
+            if expense.payment_source == "SAVINGS":
+
+                Savings.objects.create(
+                    user=request.user,
+                    transaction_type="WITHDRAWAL",
+                    amount=expense.amount,
+                    source=f"Expense: {expense.category.name}",
+                    date=expense.date,
+                    notes=expense.description,
+                        )
+
 
             return redirect("dashboard")
 
@@ -61,6 +70,34 @@ def add_expense(request):
     return render(
         request,
         "finance/add_expense.html",
+        {
+            "form": form
+        }
+    )
+@login_required
+def add_savings(request):
+
+    if request.method == "POST":
+
+        form = SavingsForm(request.POST)
+
+        if form.is_valid():
+
+            savings = form.save(commit=False)
+
+            savings.user = request.user
+
+            savings.save()
+
+            return redirect("dashboard")
+
+    else:
+
+        form = SavingsForm()
+
+    return render(
+        request,
+        "finance/add_savings.html",
         {
             "form": form
         }

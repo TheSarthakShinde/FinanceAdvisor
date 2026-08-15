@@ -1,7 +1,8 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from .models import Savings
-from .forms import IncomeForm, ExpenseForm, SavingsForm
+from .forms import IncomeForm, ExpenseForm, SavingsForm, LoanForm
+
 @login_required
 def add_income(request):
 
@@ -98,6 +99,35 @@ def add_savings(request):
     return render(
         request,
         "finance/add_savings.html",
+        {
+            "form": form
+        }
+    )
+
+@login_required
+def add_loan(request):
+
+    if request.method == "POST":
+
+        form = LoanForm(request.POST)
+
+        if form.is_valid():
+
+            loan = form.save(commit=False)
+
+            loan.user = request.user
+
+            loan.save()
+
+            return redirect("dashboard")
+
+    else:
+
+        form = LoanForm()
+
+    return render(
+        request,
+        "finance/add_loan.html",
         {
             "form": form
         }

@@ -1,8 +1,13 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
-from .models import Savings
-from .forms import IncomeForm, ExpenseForm, SavingsForm, LoanForm
-
+from .models import Savings, PurchaseGoal
+from .forms import (
+    IncomeForm,
+    ExpenseForm,
+    SavingsForm,
+    LoanForm,
+    PurchaseGoalForm,
+)
 @login_required
 def add_income(request):
 
@@ -132,3 +137,48 @@ def add_loan(request):
             "form": form
         }
     )
+
+@login_required
+def add_purchase_goal(request):
+
+    if request.method == "POST":
+
+        form = PurchaseGoalForm(request.POST)
+
+        if form.is_valid():
+
+            goal = form.save(commit=False)
+
+            goal.user = request.user
+
+            goal.save()
+
+            return redirect("dashboard")
+
+    else:
+
+        form = PurchaseGoalForm()
+
+    return render(
+        request,
+        "finance/add_purchase_goal.html",
+        {
+            "form": form
+        }
+    )
+
+
+@login_required
+def cancel_purchase_goal(request, goal_id):
+
+    if request.method == "POST":
+
+        goal = PurchaseGoal.objects.get(
+            id=goal_id,
+            user=request.user
+        )
+
+        goal.status = "CANCELLED"
+        goal.save()
+
+    return redirect("dashboard")

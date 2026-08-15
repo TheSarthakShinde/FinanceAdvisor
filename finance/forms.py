@@ -1,6 +1,5 @@
 from django import forms
-from .models import Income, Expense, Savings, Loan
-
+from .models import Income, Expense, Savings, Loan, PurchaseGoal
 class IncomeForm(forms.ModelForm):
 
     class Meta:
@@ -88,6 +87,27 @@ class LoanForm(forms.ModelForm):
             "end_date": forms.DateInput(
                 attrs={"type": "date"}
             ),
+        }
+
+class PurchaseGoalForm(forms.ModelForm):
+
+    class Meta:
+        model = PurchaseGoal
+
+        fields = [
+            "goal_name",
+            "category",
+            "target_price",
+            "target_date",
+            "priority",
+            "status",
+            "notes",
+        ]
+
+        widgets = {
+            "target_date": forms.DateInput(
+                attrs={"type": "date"}
+            )
         }
 
         
